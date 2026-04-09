@@ -59,6 +59,7 @@ async function handleFormElemSubmit(event) {
         }
         if (currentPage === maxPage) {
              hideLoadMoreButton(refs.loaderBtn);
+             reachedSearch();
         }
         
     } catch {
