@@ -10,15 +10,18 @@ const axios = Axios.create({
 
 //*  ======================================================
 
-export function getImagesByQuery(query) {
+export async function getImagesByQuery(query, numberPage) {
     const params = {
         key: "35198109-82bb50fce237d8abfec2ac917",
         image_type: "photo",
         q: `${query}`,
         orientation: "horizontal",
-        safesearch: "true"
+        safesearch: "true",
+        per_page: "15",
+        page: `${numberPage}`
     }
-    return axios.get('', { params }).then((res) => { return res.data });
+    const result = await axios.get('', { params })
+    return result.data
 }
 
 //*  ======================================================

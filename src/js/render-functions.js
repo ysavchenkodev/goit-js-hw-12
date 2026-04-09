@@ -61,6 +61,13 @@ export function somethingWrong() {
     });
 }
 
+export function reachedSearch() {
+    iziToast.info({
+        title: '',
+        message: 'Were sorry, but you have reached the end of search results.'
+    })
+}
+
 //*  ======================================================
 
 let lightbox = null;
@@ -83,11 +90,11 @@ export function renderGallery(element, data) {
     element.innerHTML = '';
 }
  export function showLoader(loader) {
-    loader.classList.add('is-active');
+    loader.classList.remove('is-hidden');
 }
 
  export function hideLoader(loader) {
-    loader.classList.remove('is-active');
+    loader.classList.add('is-hidden');
 }
 
 //*  ======================================================
