@@ -4,7 +4,7 @@ import { notFoundImage,somethingWrong, clearGallery, showLoader, hideLoader, ren
 import { getImagesByQuery } from "./js/pixabay-api";
 
 //*  ======================================================
-
+// 
 const refs = {
     listItemElem: document.querySelector('.gallery'),
     formElem: document.querySelector('.form'),
