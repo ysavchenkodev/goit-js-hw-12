@@ -1,6 +1,17 @@
 //*  ======================================================
 
-import { notFoundImage,somethingWrong, clearGallery, showLoader, hideLoader, renderGallery, toTotalmarkup, reachedSearch} from "./js/render-functions";
+import {
+    notFoundImage,
+    somethingWrong,
+    clearGallery,
+    showLoader,
+    hideLoader,
+    renderGallery,
+    appendGallery,
+    reachedSearch,
+    showLoadMoreButton,
+    hideLoadMoreButton,
+} from "./js/render-functions";
 import { getImagesByQuery } from "./js/pixabay-api";
 
 //*  ======================================================
@@ -26,7 +37,7 @@ async function handleFormElemSubmit(event) {
       objFormData = {
         searchImg: formData.get('search-text').trim(),
     };
-    refs.loaderBtn.classList.add('is-hidden');
+    hideLoadMoreButton(refs.loaderBtn);
     clearGallery(refs.listItemElem)
     const len = objFormData.searchImg.length;
     if (len === 0) return;
@@ -44,10 +55,10 @@ async function handleFormElemSubmit(event) {
         maxPage = Math.ceil(totalPage / countPage);
         renderGallery(refs.listItemElem, result.hits);
         if (maxPage > currentPage) {
-            refs.loaderBtn.classList.remove('is-hidden')
+            showLoadMoreButton(refs.loaderBtn);
         }
         if (currentPage === maxPage) {
-             refs.loaderBtn.classList.add('is-hidden')
+             hideLoadMoreButton(refs.loaderBtn);
         }
         
     } catch {
@@ -65,26 +76,25 @@ refs.loaderBtn.addEventListener('click', handleLoaderBtnClick);
 async function handleLoaderBtnClick(event) {
     event.preventDefault();
     currentPage += 1;
-    refs.loaderBtn.classList.add('is-hidden');
+    hideLoadMoreButton(refs.loaderBtn);
     showLoader(refs.loader);
 
     try {
         const result = await getImagesByQuery(objFormData.searchImg, currentPage);
-        const markup = toTotalmarkup(result.hits);
-        refs.listItemElem.insertAdjacentHTML('beforeend', markup);
+        appendGallery(refs.listItemElem, result.hits);
         smoothScrollByCardHeight();
 
         if (currentPage >= maxPage) {
-            refs.loaderBtn.classList.add('is-hidden');
+            hideLoadMoreButton(refs.loaderBtn);
             reachedSearch();
             return;
         }
 
-        refs.loaderBtn.classList.remove('is-hidden');
+        showLoadMoreButton(refs.loaderBtn);
     } catch {
         somethingWrong();
         currentPage -= 1;
-        refs.loaderBtn.classList.remove('is-hidden');
+        showLoadMoreButton(refs.loaderBtn);
     } finally {
         hideLoader(refs.loader);
     }
@@ -104,4 +114,3 @@ function smoothScrollByCardHeight() {
         behavior: 'smooth',
     });
 }
-

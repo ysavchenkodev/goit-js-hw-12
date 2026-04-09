@@ -84,6 +84,19 @@ export function renderGallery(element, data) {
 
   lightbox.refresh();
 }
+
+export function appendGallery(element, data) {
+  element.insertAdjacentHTML('beforeend', toTotalmarkup(data));
+
+  if (!lightbox) {
+    lightbox = new SimpleLightbox('.gallery a', {
+      captionsData: 'alt',
+      captionDelay: 250,
+    });
+  }
+
+  lightbox.refresh();
+}
 //*  ======================================================
 
  export function clearGallery(element) {
@@ -95,6 +108,14 @@ export function renderGallery(element, data) {
 
  export function hideLoader(loader) {
     loader.classList.add('is-hidden');
+}
+
+export function showLoadMoreButton(button) {
+    button.classList.remove('is-hidden');
+}
+
+export function hideLoadMoreButton(button) {
+    button.classList.add('is-hidden');
 }
 
 //*  ======================================================
