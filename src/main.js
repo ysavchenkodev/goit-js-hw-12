@@ -8,8 +8,7 @@ import {
     hideLoader,
     renderGallery,
     appendGallery,
-    reachedSearch,
-    showLoadMoreButton,
+    updateLoadMoreState,
     hideLoadMoreButton,
 } from "./js/render-functions";
 import { getImagesByQuery } from "./js/pixabay-api";
@@ -54,13 +53,7 @@ async function handleFormElemSubmit(event) {
         totalPage = result.totalHits;
         maxPage = Math.ceil(totalPage / countPage);
         renderGallery(refs.listItemElem, result.hits);
-        if (maxPage > currentPage) {
-            showLoadMoreButton(refs.loaderBtn);
-        }
-        if (currentPage === maxPage) {
-             hideLoadMoreButton(refs.loaderBtn);
-             reachedSearch();
-        }
+        updateLoadMoreState(refs.loaderBtn, currentPage, maxPage);
         
     } catch {
         somethingWrong();
@@ -84,18 +77,11 @@ async function handleLoaderBtnClick(event) {
         const result = await getImagesByQuery(objFormData.searchImg, currentPage);
         appendGallery(refs.listItemElem, result.hits);
         smoothScrollByCardHeight();
-
-        if (currentPage >= maxPage) {
-            hideLoadMoreButton(refs.loaderBtn);
-            reachedSearch();
-            return;
-        }
-
-        showLoadMoreButton(refs.loaderBtn);
+        updateLoadMoreState(refs.loaderBtn, currentPage, maxPage);
     } catch {
         somethingWrong();
         currentPage -= 1;
-        showLoadMoreButton(refs.loaderBtn);
+        updateLoadMoreState(refs.loaderBtn, currentPage, maxPage);
     } finally {
         hideLoader(refs.loader);
     }

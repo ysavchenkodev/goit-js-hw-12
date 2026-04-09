@@ -118,6 +118,16 @@ export function hideLoadMoreButton(button) {
     button.classList.add('is-hidden');
 }
 
+export function updateLoadMoreState(button, currentPage, maxPage) {
+    if (currentPage >= maxPage) {
+        hideLoadMoreButton(button);
+        reachedSearch();
+        return;
+    }
+
+    showLoadMoreButton(button);
+}
+
 //*  ======================================================
 
 
